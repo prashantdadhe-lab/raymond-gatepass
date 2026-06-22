@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raymond Gate Pass System</title>
+    <style>
+        /* Modern CSS Variables for Corporate Raymond Theme */
+        :root {
+            --raymond-red: #B30006;
+            --raymond-dark-red: #800004;
+            --charcoal: #111111; 
+            --light-bg: #F8F9FA;
+            --text-main: #000000; 
+            --label-color: #2D3748; 
+            --border-color: #CBD5E1; 
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            background-image: linear-gradient(135deg, #fbfbfb 0%, #f3f4f6 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Premium Corporate Header with Red Background */
+        header {
+            background: linear-gradient(135deg, var(--raymond-red) 0%, var(--raymond-dark-red) 100%);
+            padding: 16px 20px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-brand {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .header-sub {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #E2E8F0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-top: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Centered Main Area */
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        /* Shared Card Container Styling */
+        .form-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 360px;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        /* Top Accent Line */
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--raymond-red), var(--raymond-dark-red));
+        }
+
+        .form-container h2 {
+            color: var(--charcoal);
+            font-size: 1.2rem;
+            margin-bottom: 18px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        /* Visibility utility states */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Custom Input Styling */
+        .input-group {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--label-color);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input, 
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .input-group input::placeholder {
+            color: #718096;
+            font-weight: 400;
+        }
+
+        .input-group input:focus, 
+        .input-group select:focus {
+            border-color: var(--raymond-red);
+            box-shadow: 0 0 0 3px rgba(179, 0, 6, 0.08);
+        }
+
+        .input-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23111111' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 12px) center;
+            padding-right: 30px;
+        }
+
+        /* Error message styling for login window */
+        .error-message {
+            color: var(--raymond-red);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Raymond Red Action Button */
+        .submit-btn {
+            width: 100%;
+            padding: 11px;
+            background: linear-gradient(135deg, var(--raymond-red) 0%, var(--raymond-dark-red) 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(179, 0, 6, 0.15);
+            margin-top: 5px;
+        }
+
+        .submit-btn:hover {
+            box-shadow: 0 5px 15px rgba(179, 0, 6, 0.22);
+            filter: brightness(1.1);
+        }
+
+        /* Minimalist Footer */
+        footer {
+            background-color: #111111;
+            color: #A0A0A0;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-brand">Raymond</div>
+        <div class="header-sub">Lifestyle Limited • Textile Division • Pandhurna</div>
+        <span class="header-badge">Gate Pass System</span>
+    </header>
+
+    <main>
+        <div class="form-container" id="loginBlock">
+            <h2>System Login</h2>
+            <div id="loginError" class="error-message hidden">❌ Invalid username or password.</div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="loginUser">Username</label>
+                    <input type="text" id="loginUser" placeholder="Enter username" required autocomplete="username">
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="submit-btn">Login to Portal</button>
+            </form>
+        </div>
+
+        <div class="form-container hidden" id="gatePassBlock">
+            <h2>Gate Pass Request</h2>
+            
+            <form id="gatePassForm"> 
+                <div class="input-group">
+                    <label for="edpNo">User ID</label>
+                    <input type="text" id="edpNo" name="edpNo" placeholder="Enter EDP No" required>
+                </div>
+                <div class="input-group">
+                    <label for="username">User Name</label>
+                    <input type="text" id="username" name="username" placeholder="Enter User Name" required>
+                </div>
+                <div class="input-group">
+                    <label for="department">Select Department</label>
+                    <select id="department" name="department" required>
+                        <option value="" disabled selected>-- Choose Department --</option>
+                        <option value="PV spinning">PV spinning</option>
+                        <option value="Worsted spinning">Worsted spinning</option>
+                        <option value="Weaving">Weaving</option>
+                        <option value="finishing">Finishing</option>
+                        <option value="Warehouse">Warehouse</option>
+                        <option value="quality-assurance">Quality Assurance (QA)</option>
+                        <option value="hr-admin">HR & Administration</option>
+                        <option value="it-support">IT Support</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="duration">Time Duration</label>
+                    <select id="duration" name="duration" required>
+                        <option value="" disabled selected>-- Select Duration --</option>
+                        <option value="1 Hour">1 Hour</option>
+                        <option value="2 Hours">2 Hours</option>
+                        <option value="Half Day">Half Day</option>
+                        <option value="Full Day">Full Day</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="remark">Remark / Purpose to Leave</label>
+                    <input type="text" id="remark" name="remark" placeholder="Enter brief remark..." required>
+                </div>
+                <div class="input-group">
+                    <label for="Approver">Select Approver</label>
+                    <select id="Approver" name="Approver" required>
+                        <option value="" disabled selected>-- Choose Approver --</option>
+                        <option value="Mr.JK Sharma Sir">Mr.JK Sharma Sir</option>
+                        <option value="Mr. N.Shastri Sir">Mr. N.Shastri Sir</option>
+                        <option value="Mr. M.Patil Sir">Mr. M.Patil Sir</option>                       
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Submit & Open Gmail</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Built by Prashant Dadhe</p>
+    </footer>
+
+    <script>
+        // --- LOGIN APPLICATION SCRIPT ---
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userField = document.getElementById('loginUser').value.trim();
+            const passwordField = document.getElementById('loginPassword').value;
+            const errorBanner = document.getElementById('loginError');
+
+            // Verification layer
+            if (userField === "raymond" && passwordField === "ray@123") {
+                errorBanner.classList.add('hidden');
+                document.getElementById('loginBlock').classList.add('hidden');
+                document.getElementById('gatePassBlock').classList.remove('hidden');
+            } else {
+                errorBanner.classList.remove('hidden');
+                document.getElementById('loginPassword').value = ""; // Clear password field on error
+            }
+        });
+
+
+        // --- ORIGINAL GATE PASS INTERACTION SCRIPT ---
+        document.getElementById('gatePassForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+
+            const AIRTABLE_TOKEN = "patcHuu4c5DEsAIEL.0a67738f6e55c825f8678e82d26ec538c8ce35e11e799c01aefa06d7ad8c9736";
+            const AIRTABLE_BASE_ID = "appSwFVqupYGAs0MW";
+            const AIRTABLE_TABLE_ID = "tblfwpX28UHJumOrM"; 
+            const SECURITY_GATE_EMAIL = "security.gate@raymond.in"; 
+
+            const approverEmails = {
+                "Mr.JK Sharma Sir": "prashant.dadhe@raymond.in", 
+                "Mr. N.Shastri Sir": "prashant.dadhe@raymond.in",
+                "Mr. M.Patil Sir": "prashant.dadhe@raymond.in"
+            };
+
+            const selectedApprover = document.getElementById('Approver').value;
+            const targetApproverEmail = approverEmails[selectedApprover];
+
+            if (!targetApproverEmail) {
+                alert("⚠️ Approver email not found.");
+                return;
+            }
+
+            const now = new Date();
+            const uniquePassNo = `GP-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}-${Math.floor(100 + Math.random() * 900)}`;
+
+            const edpNo = document.getElementById('edpNo').value;
+            const username = document.getElementById('username').value;
+            const department = document.getElementById('department').value;
+            const duration = document.getElementById('duration').value;
+            const remark = String(document.getElementById('remark').value).trim();
+
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Record is Saving ...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${AIRTABLE_TOKEN}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        fields: {
+                            "PassNo": uniquePassNo,
+                            "UserID": edpNo,
+                            "UserName": username,
+                            "Department": department,
+                            "Duration": duration,
+                            "Remark": remark, 
+                            "Approver": selectedApprover
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorJson = await response.json();
+                    throw new Error(errorJson.error.message || "table tracking server rejection.");
+                }
+                
+                console.log("Data Saved successfully!");
+            } catch (error) {
+                console.error("Airtable Sync Error:", error);
+                alert(`⚠️ Airtable Sync Warning:\n\n${error.message}\n\nPlease verify that your table column header matches exactly as "Remark" (case-sensitive).\n\nClick OK to drop into the Gmail window anyway.`);
+            }
+
+            btn.innerText = "Submit & Send Gmail";
+            btn.disabled = false;
+
+            const subjectText = `Gate Pass Request [${uniquePassNo}] - ${username}`;
+            const messageText = `Dear Sir,\n\nPlease find the details for the gate pass approval request below:\n\n` +
+                                `• Gate Pass No: ${uniquePassNo}\n` +
+                                `• User ID: ${edpNo}\n` +
+                                `• Name: ${username}\n` +
+                                `• Department: ${department}\n` +
+                                `• Time Duration: ${duration}\n` +
+                                `• Remark: ${remark}\n` +
+                                `• Approver: ${selectedApprover}\n\n` +
+                                `Kindly review the details above and reply to this email with your formal approval to authorize this gate pass request.\n\n` +
+                                `Regards,\n${username}`;
+
+            const encodedSubject = encodeURIComponent(subjectText);
+            const encodedBody = encodeURIComponent(messageText);
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${targetApproverEmail}&cc=${SECURITY_GATE_EMAIL}&su=${encodedSubject}&body=${encodedBody}`;
+
+            window.open(gmailUrl, '_blank');
+            document.getElementById('gatePassForm').reset();
+        });
+    </script>
+</body>
+</html>

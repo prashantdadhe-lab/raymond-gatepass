@@ -1,0 +1,339 @@
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raymond Gate Pass Dashboard</title>
+    <style>
+        /* Modern CSS Variables - Synced with Raymond Corporate Theme */
+        :root {
+            --raymond-red: #B30006;
+            --raymond-dark-red: #800004;
+            --charcoal: #111111; 
+            --light-bg: #F8F9FA;
+            --text-main: #333333; 
+            --border-color: #E2E8F0; 
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            background-image: linear-gradient(135deg, #fbfbfb 0%, #f3f4f6 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Premium Corporate Header */
+        header {
+            background: linear-gradient(135deg, var(--raymond-red) 0%, var(--raymond-dark-red) 100%);
+            padding: 16px 20px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-brand {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .header-sub {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #E2E8F0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-top: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content Container */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .dashboard-card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--raymond-red), var(--raymond-dark-red));
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .dashboard-header h2 {
+            color: var(--charcoal);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* Control UI Elements */
+        .btn-refresh {
+            padding: 8px 16px;
+            background-color: var(--charcoal);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-refresh:hover {
+            background-color: var(--raymond-red);
+        }
+
+        .navigation-link {
+            font-size: 0.9rem;
+            color: var(--raymond-red);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .navigation-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Presentable Data Table UI */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #F1F5F9;
+            color: #475569;
+            font-weight: 700;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: #334155;
+        }
+
+        tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        /* Badge/Pill style for Pass Numbers */
+        .pass-badge {
+            font-family: monospace;
+            background-color: #EFF6FF;
+            color: #1E40AF;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Loading & Error States */
+        .status-message {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1rem;
+            color: #64748B;
+            font-weight: 500;
+        }
+
+        .error-message {
+            color: var(--raymond-red);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #111111;
+            color: #A0A0A0;
+            text-align: center;
+            padding: 12px;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-brand">Raymond</div>
+        <div class="header-sub">Lifestyle Limited • Textile Division • Pandhurna</div>
+        <span class="header-badge">Gate Pass Logs Dashboard</span>
+    </header>
+
+    <main>
+        <div class="dashboard-card">
+            <div class="dashboard-header">
+                <h2>Recent Gate Pass Records</h2>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <a href="index.html" class="navigation-link">← New Request Form</a>
+                    <button class="btn-refresh" id="refreshBtn" onclick="fetchAirtableData()">Refresh Data</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="dataTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Pass No</th>
+                            <th>User ID</th>
+                            <th>User Name</th>
+                            <th>Department</th>
+                            <th>Duration</th>
+                            <th>Remark / Purpose</th>
+                            <th>Approver</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data rows injected dynamically via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="statusMessage" class="status-message">Loading active passes...</div>
+        </div>
+    </main>
+
+    <footer>
+        <p><h3>© 2026 Built by Prashant Dadhe</h3></p>
+    </footer>
+
+    <script>
+        const AIRTABLE_TOKEN = "patq62D15sHh5zGal.f50b76b3f1e5452afe66944d7eb7206a82f7621e6b3fb549d38b53640ed48169";
+        const AIRTABLE_BASE_ID = "appSwFVqupYGAs0MW";
+        const AIRTABLE_TABLE_ID = "tblfwpX28UHJumOrM"; 
+
+        async function fetchAirtableData() {
+            const tableElement = document.getElementById('dataTable');
+            const tableBody = document.getElementById('tableBody');
+            const statusMessage = document.getElementById('statusMessage');
+            const refreshBtn = document.getElementById('refreshBtn');
+
+            statusMessage.style.display = "block";
+            statusMessage.className = "status-message";
+            statusMessage.innerText = "Fetching latest logs from Airtable...";
+            tableElement.style.display = "none";
+            refreshBtn.disabled = true;
+            refreshBtn.innerText = "Loading...";
+
+            const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}?sort[0][field]=PassNo&sort[0][direction]=desc`;
+
+            try {
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${AIRTABLE_TOKEN}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errInfo = await response.json();
+                    throw new Error(errInfo.error.message || "Failed to download data.");
+                }
+
+                const data = await response.json();
+                const records = data.records;
+
+                if (!records || records.length === 0) {
+                    statusMessage.innerText = "No gate pass logs available in Airtable yet.";
+                    return;
+                }
+
+                tableBody.innerHTML = "";
+
+                records.forEach(record => {
+                    const fields = record.fields;
+                    
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><span class="pass-badge">${fields.PassNo || '—'}</span></td>
+                        <td style="font-weight: 700;">${fields.UserID || '—'}</td>
+                        <td style="font-weight: 600;">${fields.UserName || '—'}</td>
+                        <td>${fields.Department || '—'}</td>
+                        <td>${fields.Duration || '—'}</td>
+                        <td>${fields.Remark || '—'}</td>
+                        <td style="color: #475569; font-weight: 500;">${fields.Approver || '—'}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+
+                statusMessage.style.display = "none";
+                tableElement.style.display = "table";
+
+            } catch (error) {
+                console.error("Dashboard Fetch Error:", error);
+                statusMessage.className = "status-message error-message";
+                statusMessage.innerText = `⚠️ Error Loading Data:\n${error.message}`;
+            } finally {
+                refreshBtn.disabled = false;
+                refreshBtn.innerText = "Refresh Data";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchAirtableData);
+    </script>
+</body>
+</html>

@@ -35,7 +35,6 @@
             justify-content: space-between;
         }
 
-        /* Premium Corporate Header with Red Background */
         header {
             background: linear-gradient(135deg, var(--raymond-red) 0%, var(--raymond-dark-red) 100%);
             padding: 16px 20px;
@@ -76,7 +75,6 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Centered Main Area */
         main {
             flex: 1;
             display: flex;
@@ -85,7 +83,6 @@
             padding: 15px;
         }
 
-        /* Shared Card Container Styling */
         .form-container {
             background: #ffffff;
             width: 100%;
@@ -99,7 +96,6 @@
             transition: var(--transition);
         }
 
-        /* Top Accent Line */
         .form-container::before {
             content: '';
             position: absolute;
@@ -119,12 +115,10 @@
             letter-spacing: 0.3px;
         }
 
-        /* Visibility utility states */
         .hidden {
             display: none !important;
         }
 
-        /* Custom Input Styling */
         .input-group {
             margin-bottom: 12px;
             display: flex;
@@ -175,7 +169,6 @@
             padding-right: 30px;
         }
 
-        /* Error message styling for login window */
         .error-message {
             color: var(--raymond-red);
             font-size: 0.8rem;
@@ -184,7 +177,6 @@
             text-align: center;
         }
 
-        /* Raymond Red Action Button */
         .submit-btn {
             width: 100%;
             padding: 11px;
@@ -206,7 +198,6 @@
             filter: brightness(1.1);
         }
 
-        /* Minimalist Footer */
         footer {
             background-color: #111111;
             color: #A0A0A0;
@@ -316,19 +307,17 @@
             const passwordField = document.getElementById('loginPassword').value;
             const errorBanner = document.getElementById('loginError');
 
-            // Verification layer
             if (userField === "raymond" && passwordField === "ray@123") {
                 errorBanner.classList.add('hidden');
                 document.getElementById('loginBlock').classList.add('hidden');
                 document.getElementById('gatePassBlock').classList.remove('hidden');
             } else {
                 errorBanner.classList.remove('hidden');
-                document.getElementById('loginPassword').value = ""; // Clear password field on error
+                document.getElementById('loginPassword').value = "";
             }
         });
 
-
-        // --- ORIGINAL GATE PASS INTERACTION SCRIPT ---
+        // --- GATE PASS INTERACTION SCRIPT ---
         document.getElementById('gatePassForm').addEventListener('submit', async (e) => {
             e.preventDefault(); 
 
@@ -394,7 +383,6 @@
                     const errorJson = await response.json();
                     throw new Error(errorJson.error.message || "table tracking server rejection.");
                 }
-                
                 console.log("Data Saved successfully!");
             } catch (error) {
                 console.error("Airtable Sync Error:", error);

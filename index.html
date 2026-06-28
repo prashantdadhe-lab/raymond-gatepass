@@ -37,9 +37,39 @@
 
         header {
             background: linear-gradient(135deg, var(--raymond-red) 0%, var(--raymond-dark-red) 100%);
-            padding: 16px 20px;
+            padding: 20px;
             text-align: center;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 100%;
+            display: block;
+            min-height: 110px;
+        }
+
+        /* Top Left Corner Logo Container */
+        .logo-wrapper {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        /* This filter turns the dark red text components pure white so they contrast beautifully */
+        .corner-logo {
+            display: block;
+            height: auto;
+            max-height: 65px;
+            width: 170px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Center Content Block for Your Original Headings */
+        .header-text-block {
+            text-align: center;
+            width: 100%;
+            padding: 0 190px;
         }
 
         .header-brand {
@@ -205,14 +235,36 @@
             padding: 10px;
             font-size: 0.75rem;
         }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .logo-wrapper {
+                position: relative;
+                left: unset;
+                top: unset;
+                transform: unset;
+                margin: 0 auto 15px auto;
+                display: flex;
+                justify-content: center;
+            }
+            .header-text-block {
+                padding: 0;
+            }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="header-brand">Raymond</div>
-        <div class="header-sub">Lifestyle Limited • Textile Division • Pandhurna</div>
-        <span class="header-badge">Gate Pass System</span>
+        <div class="logo-wrapper">
+            <img src="Raymond100YearsLogo_f02986c7_d525_43d0_b5a1_2fde4d3ede8d.png" alt="Raymond 100 Years" class="corner-logo">
+        </div>
+
+        <div class="header-text-block">
+            <div class="header-brand">Raymond</div>
+            <div class="header-sub">Lifestyle Limited • Textile Division • Pandhurna</div>
+            <span class="header-badge">Gate Pass System</span>
+        </div>
     </header>
 
     <main>
@@ -253,16 +305,18 @@
                         <option value="Worsted spinning">Worsted spinning</option>
                         <option value="Weaving">Weaving</option>
                         <option value="finishing">Finishing</option>
+                        <option value="Folding">Folding</option>
                         <option value="Warehouse">Warehouse</option>
                         <option value="quality-assurance">Quality Assurance (QA)</option>
                         <option value="hr-admin">HR & Administration</option>
                         <option value="it-support">IT Support</option>
-                    </select>
+                        <option value="Account & Commercial">Account & Commercial</option>                    </select>
                 </div>
                 <div class="input-group">
                     <label for="duration">Time Duration</label>
                     <select id="duration" name="duration" required>
                         <option value="" disabled selected>-- Select Duration --</option>
+                         <option value="1 Hour">30 Minutes</option>
                         <option value="1 Hour">1 Hour</option>
                         <option value="2 Hours">2 Hours</option>
                         <option value="Half Day">Half Day</option>
@@ -283,7 +337,7 @@
                         <option value="Mr. Manish Thorat">Mr. Manish Thorat</option>
                         <option value="Mr. Jagdish Kumar">Mr. Jagdish Kumar</option>
                         <option value="Mr.Dnyaneshwar Deshmukh">Mr.Dnyaneshwar Deshmukh</option> 
-                        <option value="Mr.Bimal Katiyar">Mr.Bimal Katiyar</option>                           
+                        <option value="Mr.Bimal Katiyar">Mr.Bimal Katiyar</option>                                 
                         <option value="Mr.Anjan Dutta">Mr.Anjan Dutta</option>  
                         <option value="Mr.Mahesh Patil">Mr.Mahesh Patil</option>   
                     </select>
@@ -302,7 +356,6 @@
         // --- LOGIN APPLICATION SCRIPT ---
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const userField = document.getElementById('loginUser').value.trim();
             const passwordField = document.getElementById('loginPassword').value;
             const errorBanner = document.getElementById('loginError');
@@ -324,7 +377,9 @@
             const AIRTABLE_TOKEN = "patcHuu4c5DEsAIEL.0a67738f6e55c825f8678e82d26ec538c8ce35e11e799c01aefa06d7ad8c9736";
             const AIRTABLE_BASE_ID = "appSwFVqupYGAs0MW";
             const AIRTABLE_TABLE_ID = "tblfwpX28UHJumOrM"; 
-            const SECURITY_GATE_EMAIL = "security.gate@raymond.in"; 
+            const SECURITY_GATE_EMAIL = "security.boregaon@raymond.in  manish.thorat@raymond.in";    
+                 
+            
 
             const approverEmails = {
                 "Mr.JK Sharma": "jk.sharma@raymond.in", 

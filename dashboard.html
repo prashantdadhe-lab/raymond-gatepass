@@ -1,4 +1,3 @@
-HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +15,10 @@ HTML
             --border-color: #E2E8F0; 
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             --transition: all 0.2s ease;
+            --success-green: #10B981;
+            --success-bg: #D1FAE5;
+            --warning-amber: #F59E0B;
+            --warning-bg: #FEF3C7;
         }
 
         * {
@@ -41,6 +44,25 @@ HTML
             padding: 16px 20px;
             text-align: center;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        }
+
+         /* Top Left Corner Logo Container */
+        .logo-wrapper {
+            position: absolute;
+            left: 20px;
+            top: 8%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        /* This filter turns the dark red text components pure white so they contrast beautifully */
+        .corner-logo {
+           display: block;
+            height: auto;
+            max-height: 65px;
+            width: 170px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
         }
 
         .header-brand {
@@ -80,7 +102,7 @@ HTML
         main {
             flex: 1;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 30px 20px;
         }
@@ -133,8 +155,37 @@ HTML
             transition: var(--transition);
         }
 
-        .btn-refresh:hover {
+        .btn-refresh:hover:not(:disabled) {
             background-color: var(--raymond-red);
+        }
+
+        .btn-refresh:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Interactive Action Approve Button */
+        .btn-approve {
+            padding: 6px 12px;
+            background-color: var(--success-green);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-approve:hover:not(:disabled) {
+            background-color: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn-approve:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .navigation-link {
@@ -148,7 +199,7 @@ HTML
             text-decoration: underline;
         }
 
-        /* Presentable Data Table UI */
+        /* Data Table Design Layout */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -176,13 +227,14 @@ HTML
             padding: 14px 16px;
             border-bottom: 1px solid var(--border-color);
             color: #334155;
+            vertical-align: middle;
         }
 
         tr:hover {
             background-color: #F8FAFC;
         }
 
-        /* Badge/Pill style for Pass Numbers */
+        /* Badges/Pill Design Configurations */
         .pass-badge {
             font-family: monospace;
             background-color: #EFF6FF;
@@ -191,6 +243,27 @@ HTML
             border-radius: 4px;
             font-weight: 600;
             font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-approved {
+            background-color: var(--success-bg);
+            color: #065F46;
+        }
+
+        .status-pending {
+            background-color: var(--warning-bg);
+            color: #92400E;
         }
 
         /* Loading & Error States */
@@ -219,6 +292,11 @@ HTML
 <body>
 
     <header>
+
+         <div class="logo-wrapper">
+            <img src="Raymond100YearsLogo_f02986c7_d525_43d0_b5a1_2fde4d3ede8d.png" alt="Raymond 100 Years" class="corner-logo">
+        </div>
+        
         <div class="header-brand">Raymond</div>
         <div class="header-sub">Lifestyle Limited • Textile Division • Pandhurna</div>
         <span class="header-badge">Gate Pass Logs Dashboard</span>
@@ -243,13 +321,14 @@ HTML
                             <th>User Name</th>
                             <th>Department</th>
                             <th>Duration</th>
-                            <th>Remark / Purpose</th>
                             <th>Approver</th>
+                            <th>Remark / Purpose</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
-                        <!-- Data rows injected dynamically via JS -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
 
@@ -258,7 +337,7 @@ HTML
     </main>
 
     <footer>
-        <p><h3>© 2026 Built by Prashant Dadhe</h3></p>
+        <p>© 2026 Built by Prashant Dadhe</p>
     </footer>
 
     <script>
@@ -306,7 +385,12 @@ HTML
 
                 records.forEach(record => {
                     const fields = record.fields;
+                    const recordId = record.id;
                     
+                    // Defaults safely to 'Pending' if field layout in Airtable is currently blank/unset
+                    const currentStatus = fields.Status || 'Pending';
+                    const isApproved = currentStatus.toLowerCase() === 'approved';
+
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td><span class="pass-badge">${fields.PassNo || '—'}</span></td>
@@ -314,8 +398,19 @@ HTML
                         <td style="font-weight: 600;">${fields.UserName || '—'}</td>
                         <td>${fields.Department || '—'}</td>
                         <td>${fields.Duration || '—'}</td>
-                        <td>${fields.Remark || '—'}</td>
                         <td style="color: #475569; font-weight: 500;">${fields.Approver || '—'}</td>
+                        <td>${fields.Remark || '—'}</td>
+                        <td>
+                            <span class="status-pill ${isApproved ? 'status-approved' : 'status-pending'}">
+                                ${currentStatus}
+                            </span>
+                        </td>
+                        <td>
+                            ${isApproved 
+                                ? `<span style="color: var(--success-green); font-weight:600; font-size:0.85rem; display:inline-block; padding: 6px 0;">✓ Complete</span>` 
+                                : `<button class="btn-approve" onclick="approvePass('${recordId}', this)">Approve</button>`
+                            }
+                        </td>
                     `;
                     tableBody.appendChild(tr);
                 });
@@ -330,6 +425,46 @@ HTML
             } finally {
                 refreshBtn.disabled = false;
                 refreshBtn.innerText = "Refresh Data";
+            }
+        }
+
+        // Trigger updates live inside Airtable
+        async function approvePass(recordId, buttonElement) {
+            if (!confirm("Are you sure you want to approve this Gate Pass?")) return;
+
+            const originalText = buttonElement.innerText;
+            buttonElement.disabled = true;
+            buttonElement.innerText = "Processing...";
+
+            const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}/${recordId}`;
+            
+            try {
+                const response = await fetch(url, {
+                    method: "PATCH",
+                    headers: {
+                        "Authorization": `Bearer ${AIRTABLE_TOKEN}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        fields: {
+                            "Status": "Approved"
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errInfo = await response.json();
+                    throw new Error(errInfo.error.message || "Failed to update status.");
+                }
+
+                // Smoothly refresh log registry metrics
+                await fetchAirtableData();
+
+            } catch (error) {
+                console.error("Approval System Error:", error);
+                alert(`⚠️ Error updating record:\n${error.message}`);
+                buttonElement.disabled = false;
+                buttonElement.innerText = originalText;
             }
         }
 
